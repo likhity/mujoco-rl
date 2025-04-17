@@ -7,7 +7,7 @@ import mujoco.viewer
 
 
 class PickPlaceEnv(gym.Env):
-    def __init__(self, reward_type="dense", distance_threshold=0.05, max_steps=1000):
+    def __init__(self, reward_type="dense", distance_threshold=0.05, max_steps=100):
         xml_path = os.path.join(os.path.dirname(__file__), "../mujoco_assets/pick_place.xml")
         self.model = MjModel.from_xml_path(xml_path)
         self.data = MjData(self.model)
@@ -35,8 +35,8 @@ class PickPlaceEnv(gym.Env):
         self.data.qpos[0] = 0.0
         self.data.qpos[1] = 0.0
         
-        # self.data.qpos[2] = 0.3 + 0.05 * np.random.randn()  # x of object
-        # self.data.qpos[3] = 0.2 + 0.05 * np.random.randn()  # y of object
+        self.data.qpos[2] = 0.3 + 0.05 * np.random.randn()  # x of object
+        self.data.qpos[3] = 0.2 + 0.05 * np.random.randn()  # y of object
 
         for _ in range(5):
             mj_step(self.model, self.data)
@@ -53,7 +53,7 @@ class PickPlaceEnv(gym.Env):
             mj_step(self.model, self.data)
 
         obs = self._get_obs()
-        reward = self._compute_reward(obs)
+        reward = self._compute_reward(obs, action)
 
         object_pos = obs[2:5]
         goal_pos = obs[5:]
@@ -74,7 +74,7 @@ class PickPlaceEnv(gym.Env):
         goal_pos = self.model.site('goal_site').pos
         return np.concatenate([joint_angles, object_pos, goal_pos])
 
-    def _compute_reward(self, obs):
+    def _compute_reward(self, obs, action):
         object_pos = obs[2:5]
         goal_pos = obs[5:]
 
@@ -85,8 +85,14 @@ class PickPlaceEnv(gym.Env):
 
         # Distance from object to goal (encourages transport)
         obj_goal_dist = np.linalg.norm(object_pos - goal_pos)
+        
+        control_cost = np.linalg.norm(action) ** 2
+              
+        w_near = 0.5
+        reward_dist_weight = 1.0
+        reward_control_weight = 0.1
 
-        reward = -0.1 * grip_obj_dist - 1.0 * obj_goal_dist
+        reward = -w_near * grip_obj_dist - reward_dist_weight * obj_goal_dist - reward_control_weight * control_cost
         if obj_goal_dist < self.distance_threshold:
             reward += 10.0
     
