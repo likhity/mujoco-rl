@@ -1,6 +1,7 @@
 from env.pick_place_env import PickPlaceEnv
 from stable_baselines3 import PPO
 import os
+from stable_baselines3.common.callbacks import CheckpointCallback
 
 # Create the environment
 env = PickPlaceEnv()
@@ -15,7 +16,7 @@ model = PPO(
 )
 
 # Train the model
-model.learn(total_timesteps=2_000_000)
+model.learn(total_timesteps=10_000_000)
 
 # Save the trained model
 save_path = "models/ppo_pick_place"

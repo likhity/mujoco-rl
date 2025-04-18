@@ -5,7 +5,6 @@ from mujoco import MjModel, MjData
 from mujoco import mj_step, mj_resetDataKeyframe
 import mujoco.viewer
 import mujoco
-from mujoco import mj_contactForce
 
 class PickPlaceEnv(gym.Env):
     def __init__(self, reward_type="dense", distance_threshold=0.05, max_steps=100):
@@ -29,8 +28,6 @@ class PickPlaceEnv(gym.Env):
         self.link1_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "link1")
         self.link2_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "link2")
         self.object_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "object_geom")
-        
-        print(self.link1_geom_id, self.link2_geom_id, self.object_geom_id)
         
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
@@ -114,10 +111,6 @@ class PickPlaceEnv(gym.Env):
         reward_control_weight = 0.1
 
         reward = -w_near * grip_obj_dist - reward_dist_weight * obj_goal_dist - reward_control_weight * control_cost
-        
-        if self._has_contact():
-            reward += 3.0
-        
         if obj_goal_dist < self.distance_threshold:
             reward += 10.0
     
