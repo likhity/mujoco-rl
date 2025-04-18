@@ -5,6 +5,8 @@ from mujoco import MjModel, MjData
 from mujoco import mj_step, mj_resetDataKeyframe
 import mujoco.viewer
 import mujoco
+from mujoco import mj_contactForce
+
 class PickPlaceEnv(gym.Env):
     def __init__(self, reward_type="dense", distance_threshold=0.05, max_steps=100):
         xml_path = os.path.join(os.path.dirname(__file__), "../mujoco_assets/pick_place.xml")
@@ -23,7 +25,13 @@ class PickPlaceEnv(gym.Env):
 
         # Observation: joint angles (2) + object pos (3) + goal pos (3)
         self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(8,), dtype=np.float32)
-
+        
+        self.link1_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "link1")
+        self.link2_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "link2")
+        self.object_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "object_geom")
+        
+        print(self.link1_geom_id, self.link2_geom_id, self.object_geom_id)
+        
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
 
@@ -73,12 +81,17 @@ class PickPlaceEnv(gym.Env):
         goal_pos = self.model.site('goal_site').pos
         return np.concatenate([joint_angles, object_pos, goal_pos])
     
-    def _has_contact(self, geom1_name, geom2_name):
+    def _has_contact(self):
         for i in range(self.data.ncon):
             contact = self.data.contact[i]
-            g1 = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
-            g2 = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2)
-            if (g1 == geom1_name and g2 == geom2_name) or (g1 == geom2_name and g2 == geom1_name):
+            geom1 = contact.geom1
+            geom2 = contact.geom2
+
+            contact_pair = {geom1, geom2}
+            if (
+                {self.link1_geom_id, self.object_geom_id} == contact_pair
+                or {self.link2_geom_id, self.object_geom_id} == contact_pair
+            ):
                 return True
         return False
 
@@ -102,7 +115,7 @@ class PickPlaceEnv(gym.Env):
 
         reward = -w_near * grip_obj_dist - reward_dist_weight * obj_goal_dist - reward_control_weight * control_cost
         
-        if self._has_contact('gripper', 'object_geom'):
+        if self._has_contact():
             reward += 3.0
         
         if obj_goal_dist < self.distance_threshold:
