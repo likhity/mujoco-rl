@@ -4,8 +4,7 @@ import numpy as np
 from mujoco import MjModel, MjData
 from mujoco import mj_step, mj_resetDataKeyframe
 import mujoco.viewer
-
-
+import mujoco
 class PickPlaceEnv(gym.Env):
     def __init__(self, reward_type="dense", distance_threshold=0.05, max_steps=100):
         xml_path = os.path.join(os.path.dirname(__file__), "../mujoco_assets/pick_place.xml")
@@ -73,6 +72,15 @@ class PickPlaceEnv(gym.Env):
         object_pos = self.data.xpos[self.model.body('object').id]
         goal_pos = self.model.site('goal_site').pos
         return np.concatenate([joint_angles, object_pos, goal_pos])
+    
+    def _has_contact(self, geom1_name, geom2_name):
+        for i in range(self.data.ncon):
+            contact = self.data.contact[i]
+            g1 = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
+            g2 = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2)
+            if (g1 == geom1_name and g2 == geom2_name) or (g1 == geom2_name and g2 == geom1_name):
+                return True
+        return False
 
     def _compute_reward(self, obs, action):
         object_pos = obs[2:5]
@@ -93,6 +101,10 @@ class PickPlaceEnv(gym.Env):
         reward_control_weight = 0.1
 
         reward = -w_near * grip_obj_dist - reward_dist_weight * obj_goal_dist - reward_control_weight * control_cost
+        
+        if self._has_contact('gripper', 'object_geom'):
+            reward += 3.0
+        
         if obj_goal_dist < self.distance_threshold:
             reward += 10.0
     
