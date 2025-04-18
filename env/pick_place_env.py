@@ -25,10 +25,6 @@ class PickPlaceEnv(gym.Env):
         # Observation: joint angles (2) + object pos (3) + goal pos (3)
         self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(8,), dtype=np.float32)
         
-        self.link1_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "link1")
-        self.link2_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "link2")
-        self.object_geom_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, "object_geom")
-        
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
 
@@ -77,20 +73,6 @@ class PickPlaceEnv(gym.Env):
         object_pos = self.data.xpos[self.model.body('object').id]
         goal_pos = self.model.site('goal_site').pos
         return np.concatenate([joint_angles, object_pos, goal_pos])
-    
-    def _has_contact(self):
-        for i in range(self.data.ncon):
-            contact = self.data.contact[i]
-            geom1 = contact.geom1
-            geom2 = contact.geom2
-
-            contact_pair = {geom1, geom2}
-            if (
-                {self.link1_geom_id, self.object_geom_id} == contact_pair
-                or {self.link2_geom_id, self.object_geom_id} == contact_pair
-            ):
-                return True
-        return False
 
     def _compute_reward(self, obs, action):
         object_pos = obs[2:5]

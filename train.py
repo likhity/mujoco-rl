@@ -1,7 +1,6 @@
 from env.pick_place_env import PickPlaceEnv
 from stable_baselines3 import PPO
 import os
-from stable_baselines3.common.callbacks import CheckpointCallback
 
 # Create the environment
 env = PickPlaceEnv()
