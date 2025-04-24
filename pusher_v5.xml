@@ -82,52 +82,57 @@ modified by @Kallinteris-Andreas
     <!-- 10-Pin Setup -->
     <!-- Row 1 -->
       <body name="pin1" pos="0.0 2.0 -0.2">
-        <joint name="pin1_free" type="free"/>
+        <joint name="pin1_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin2" pos="-0.0762 2.132 -0.2">
-        <joint name="pin2_free" type="free"/>
+        <joint name="pin2_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin3" pos="0.0762 2.132 -0.2">
-        <joint name="pin3_free" type="free"/>
+        <joint name="pin3_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin4" pos="-0.1524 2.2639 -0.2">
-        <joint name="pin4_free" type="free"/>
+        <joint name="pin4_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin5" pos="0.0 2.2639 -0.2">
-        <joint name="pin5_free" type="free"/>
+        <joint name="pin5_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin6" pos="0.1524 2.2639 -0.2">
-        <joint name="pin6_free" type="free"/>
+        <joint name="pin6_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin7" pos="-0.2286 2.3959 -0.2">
-        <joint name="pin7_free" type="free"/>
+        <joint name="pin7_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin8" pos="-0.0762 2.3959 -0.2">
-        <joint name="pin8_free" type="free"/>
+        <joint name="pin8_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
       
       <body name="pin9" pos="0.0762 2.3959 -0.2">
-        <joint name="pin9_free" type="free"/>
+        <joint name="pin9_free" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
-      
-      <body name="pin10" pos="0.2286 2.3959 -0.2">
-        <joint name="pin10_free" type="free"/>
+
+      <body name="pin10" pos="0.2286 2.3959 0.0">
+        <joint name="pin10_free" type="free" damping="1"/>
+        <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
+      </body>
+
+      <body name="random" pos="4 4 0.0">
+        <joint name="random" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="5" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
 
