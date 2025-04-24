@@ -176,7 +176,7 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         reward_near_weight: float = 0.5,
         reward_dist_weight: float = 1,
         reward_control_weight: float = 0.1,
-        max_episode_steps: int = 1000,
+        max_episode_steps: int = 100,
         **kwargs,
     ):
         utils.EzPickle.__init__(

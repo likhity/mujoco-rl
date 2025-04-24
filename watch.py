@@ -7,7 +7,7 @@ import gymnasium as gym
 # Load environment and trained model
 env = BowlingEnv()
 env.render_mode="human"
-model = PPO.load("models/ppo_pusher", device="cpu")
+model = PPO.load("models/ppo_bowling", device="cpu")
 
 # Reset environment
 obs, _ = env.reset()
