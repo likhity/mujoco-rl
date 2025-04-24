@@ -17,7 +17,7 @@ model = PPO(
 )
 
 # Train the model
-model.learn(total_timesteps=2_000_000)
+model.learn(total_timesteps=100_000)
 
 # Save the trained model
 save_path = "models/ppo_bowling"

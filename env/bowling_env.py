@@ -176,7 +176,7 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         reward_near_weight: float = 0.5,
         reward_dist_weight: float = 1,
         reward_control_weight: float = 0.1,
-        max_episode_steps: int = 100,
+        max_episode_steps: int = 500,
         **kwargs,
     ):
         utils.EzPickle.__init__(
@@ -215,6 +215,23 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
             ],
             "render_fps": int(np.round(1.0 / self.dt)),
         }
+        
+        self.pin_names = [f"pin{i}" for i in range(1, 11)]
+        i = 12
+        self._initial_pin_poses = {}
+        for name in self.pin_names:
+            self._initial_pin_poses[name] = self.model.body_pos[i]
+            i += 1
+    
+    def _is_pin_knocked(self, pin_name, tilt_thresh=np.deg2rad(30), move_thresh=0.05):
+        body_id = self.model.body(pin_name).id
+
+        # Check tilt angle
+        z_axis = self.data.xmat[body_id].reshape(3, 3)[:, 2]
+        upright_angle = np.arccos(np.clip(z_axis[2], -1.0, 1.0))  # angle from world z
+        is_tilted = upright_angle > tilt_thresh
+
+        return is_tilted
 
     def step(self, action):
         self._step_count += 1
@@ -224,9 +241,25 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         reward, reward_info = self._get_rew(action)
         info = reward_info
         info["is_success"] = np.linalg.norm(self.get_body_com("object") - self.get_body_com("goal")) < 0.05
+        
+        knocked_pins = 0
+        for pin in self.pin_names:
+            if self._is_pin_knocked(pin):
+                knocked_pins += 1
+
+        info["pins_knocked"] = knocked_pins
+        
+        if knocked_pins == 10:
+            info["is_success"] = True
+        else:  
+            info["is_success"] = False
+            
+        # bonus for knocking down pins
+        if knocked_pins > 0:
+            reward += knocked_pins
+        
         terminated = info["is_success"]
-        if terminated:
-            reward += 10
+        
         truncated = self._step_count >= self._max_episode_steps
         if truncated:
             self._step_count = 0
