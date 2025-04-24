@@ -1,10 +1,10 @@
-from env.pick_place_env import PickPlaceEnv
+from env.bowling_env import BowlingEnv
 from stable_baselines3 import PPO
 import numpy as np
 # Load trained model
-model = PPO.load("models/ppo_pick_place")
+model = PPO.load("models/ppo_bowling")
 # Create environment
-env = PickPlaceEnv()
+env = BowlingEnv()
 n_episodes = 100
 episode_rewards = []
 successes = []

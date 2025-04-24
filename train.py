@@ -1,24 +1,26 @@
-from env.pick_place_env import PickPlaceEnv
+from env.bowling_env import BowlingEnv
 from stable_baselines3 import PPO
 import os
 
+import gymnasium as gym
+
 # Create the environment
-env = PickPlaceEnv()
+env = BowlingEnv()
 
 # Define the PPO model
 model = PPO(
     "MlpPolicy",
     env,
     verbose=1,
-    tensorboard_log="./ppo_pick_place_tensorboard/",
+    tensorboard_log="./ppo_bowling_tensorboard/",
     device="cpu",
 )
 
 # Train the model
-model.learn(total_timesteps=10_000_000)
+model.learn(total_timesteps=2_000_000)
 
 # Save the trained model
-save_path = "models/ppo_pick_place"
+save_path = "models/ppo_bowling"
 os.makedirs(os.path.dirname(save_path), exist_ok=True)
 model.save(save_path)
 

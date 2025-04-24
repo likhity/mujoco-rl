@@ -2,3 +2,5 @@ venv/
 ppo_pick_place_tensorboard/
 env/__pycache__/
 models/checkpoints/
+ppo_bowling_tensorboard/
+ppo_pusher_tensorboard/

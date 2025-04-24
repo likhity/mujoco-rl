@@ -1,10 +1,13 @@
-from env.pick_place_env import PickPlaceEnv
+from env.bowling_env import BowlingEnv
 from stable_baselines3 import PPO
 import time
 
+import gymnasium as gym
+
 # Load environment and trained model
-env = PickPlaceEnv()
-model = PPO.load("models/ppo_pick_place", device="cpu")
+env = BowlingEnv()
+env.render_mode="human"
+model = PPO.load("models/ppo_pusher", device="cpu")
 
 # Reset environment
 obs, _ = env.reset()
