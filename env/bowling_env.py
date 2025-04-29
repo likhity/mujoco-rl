@@ -288,7 +288,7 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         self._prev_dist_to_goal = curr_dist
 
         # reward_near = -np.linalg.norm(vec_1) * self._reward_near_weight
-        # reward_dist = -np.linalg.norm(vec_2) * self._reward_dist_weight
+        reward_dist = -np.linalg.norm(vec_2) * self._reward_dist_weight
         reward_ctrl = -np.square(action).sum() * self._reward_control_weight
         # body = self.model.body(name="object")
         # obj_vel = np.array(self.data.cvel)[body.id][:3]
@@ -296,11 +296,12 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         # reward_speed = speed * 0.5
         reward_approach = delta_dist * 0.25
 
-        reward = reward_ctrl + reward_approach
+        reward = reward_ctrl + reward_approach + reward_dist
 
         reward_info = {
             "reward_ctrl": reward_ctrl,
-            "reward_approach": reward_approach
+            "reward_approach": reward_approach,
+            "reward_dist": reward_dist
         }
 
         return reward, reward_info
