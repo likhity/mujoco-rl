@@ -136,7 +136,7 @@ modified by @Kallinteris-Andreas
         <geom type="mesh" mesh="Pin" size="0.025" mass="1" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
 
-    <body name="goal" pos="0.0 2.0 -0.3230">
+    <body name="goal" pos="0.0 4.0 -0.3230">
         <geom rgba="1 0 0 1" type="cylinder" size="0.08 0.001 0.1" density='0.00001' contype="0" conaffinity="0"/>
         <joint name="goal_slidey" type="slide" pos="0 0 0" axis="0 1 0" range="-10.3213 10.3" damping="0.5"/>
         <joint name="goal_slidex" type="slide" pos="0 0 0" axis="1 0 0" range="-10.3213 10.3" damping="0.5"/>
@@ -145,12 +145,12 @@ modified by @Kallinteris-Andreas
     </worldbody>
    
     <actuator>
-      <motor joint="r_shoulder_pan_joint" ctrlrange="-2.0 2.0" ctrllimited="true" />
+      <motor joint="r_shoulder_pan_joint" ctrlrange="-2.0 2.0" gear='5' ctrllimited="true" />
       <motor joint="r_shoulder_lift_joint" ctrlrange="-2.0 2.0" gear='5' ctrllimited="true" />
-      <motor joint="r_upper_arm_roll_joint" ctrlrange="-2.0 2.0" ctrllimited="true" />
-      <motor joint="r_elbow_flex_joint" ctrlrange="-2.0 2.0" ctrllimited="true" />
-      <motor joint="r_forearm_roll_joint" ctrlrange="-2.0 2.0" ctrllimited="true" />
-      <motor joint="r_wrist_flex_joint" ctrlrange="-2.0 2.0" ctrllimited="true" />
-      <motor joint="r_wrist_roll_joint" ctrlrange="-2.0 2.0" ctrllimited="true"/>
+      <motor joint="r_upper_arm_roll_joint" ctrlrange="-2.0 2.0" gear='5' ctrllimited="true" />
+      <motor joint="r_elbow_flex_joint" ctrlrange="-2.0 2.0" gear='5' ctrllimited="true" />
+      <motor joint="r_forearm_roll_joint" ctrlrange="-2.0 2.0" gear='5' ctrllimited="true" />
+      <motor joint="r_wrist_flex_joint" ctrlrange="-2.0 2.0" gear='5' ctrllimited="true" />
+      <motor joint="r_wrist_roll_joint" ctrlrange="-2.0 2.0" gear='5' ctrllimited="true"/>
     </actuator>
   </mujoco>
