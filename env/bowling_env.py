@@ -176,7 +176,7 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         reward_near_weight: float = 0.5,
         reward_dist_weight: float = 1,
         reward_control_weight: float = 0.1,
-        max_episode_steps: int = 500,
+        max_episode_steps: int = 100,
         **kwargs,
     ):
         utils.EzPickle.__init__(
@@ -278,29 +278,21 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         
         # Current distance to goal
         curr_dist = np.linalg.norm(self.get_body_com("object") - self.get_body_com("goal"))
-
-        # Compute change in distance
-        if self._prev_dist_to_goal is None:
-            delta_dist = 0.0  # No movement yet at first step
-        else:
-            delta_dist = self._prev_dist_to_goal - curr_dist  # Positive if getting closer
         
         self._prev_dist_to_goal = curr_dist
 
-        # reward_near = -np.linalg.norm(vec_1) * self._reward_near_weight
         reward_dist = -np.linalg.norm(vec_2) * self._reward_dist_weight
         reward_ctrl = -np.square(action).sum() * self._reward_control_weight
-        # body = self.model.body(name="object")
-        # obj_vel = np.array(self.data.cvel)[body.id][:3]
-        # speed = np.linalg.norm(obj_vel)
-        # reward_speed = speed * 0.5
-        reward_approach = delta_dist * 0.25
+        body = self.model.body(name="object")
+        obj_vel = np.array(self.data.cvel)[body.id][:3]
+        speed = np.linalg.norm(obj_vel)
+        reward_speed = speed * 0.2
 
-        reward = reward_ctrl + reward_approach + reward_dist
+        reward = reward_ctrl + reward_dist + reward_speed
 
         reward_info = {
             "reward_ctrl": reward_ctrl,
-            "reward_approach": reward_approach,
+            "reward_speed": reward_speed,
             "reward_dist": reward_dist
         }
 
