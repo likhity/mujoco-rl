@@ -129,13 +129,14 @@ modified by @Kallinteris-Andreas
       <body name="pin10" pos="0.2286 2.3959 -0.2">
         <joint name="pin10_free" type="free" damping="0.0"/>
         <geom type="mesh" mesh="Pin" size="0.025" density="500" condim="4" contype="1" conaffinity="1" rgba="1 1 1 1" />
-      </body>4
-      <body name="random" pos="4 4 0.0">
+      </body>
+
+      <body name="random" pos="100 100 0.0">
         <joint name="random" type="free" damping="1"/>
         <geom type="mesh" mesh="Pin" size="0.025" mass="1" rgba="1 1 1 1" contype="1" conaffinity="1"/>
       </body>
 
-    <body name="goal" pos="0.0 4.0 -0.3230">
+    <body name="goal" pos="0.0 2.37 -0.3230">
         <geom rgba="1 0 0 1" type="cylinder" size="0.08 0.001 0.1" density='0.00001' contype="0" conaffinity="0"/>
         <joint name="goal_slidey" type="slide" pos="0 0 0" axis="0 1 0" range="-10.3213 10.3" damping="0.5"/>
         <joint name="goal_slidex" type="slide" pos="0 0 0" axis="1 0 0" range="-10.3213 10.3" damping="0.5"/>

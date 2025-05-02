@@ -255,7 +255,7 @@ class BowlingEnv(MujocoEnv, utils.EzPickle):
         
         if knocked_pins == 10:
             info["is_success"] = True
-            reward += 100
+            reward = 100
         else:  
             info["is_success"] = False
             
