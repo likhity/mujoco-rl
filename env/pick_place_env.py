@@ -7,7 +7,7 @@ import mujoco.viewer
 import mujoco
 
 class PickPlaceEnv(gym.Env):
-    def __init__(self, reward_type="dense", distance_threshold=0.05, max_steps=200):
+    def __init__(self, reward_type="dense", distance_threshold=0.05, max_steps=500):
         xml_path = os.path.join(os.path.dirname(__file__), "../mujoco_assets/pick_place.xml")
         self.model = MjModel.from_xml_path(xml_path)
         self.data = MjData(self.model)
