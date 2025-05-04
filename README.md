@@ -29,7 +29,7 @@ This project essentially consists of two main parts.
 
 ### Part 1
 
-We initially did Part 1 with the initial location of the box fixed in one place. The final model for this task in the **`master`** branch. So, please make sure you are in the **`master`** branch to view the result of this task. To make sure you are in the **`master`** branch, run:
+We initially did Part 1 with the initial location of the box fixed in one place. The final model for this task in the **`master`** branch. So, please make sure you are in the master branch to view the result of this task. To do this, run:
 
 ```
 git checkout master
@@ -41,17 +41,17 @@ To view its behavior, simply run:
 python watch.py
 ```
 
-This will open a Mujoco simulation.
+This will open the Mujoco simulation.
 
 We then wanted to randomize the initial location of the box to promote generalization.
 
-To see the results of this, switch to the **`random`** branch.
+To see the result of this, switch to the **`random`** branch.
 
 ```
 git checkout random
 ```
 
-Now run `python watch.py` to see the result of the result of this task where we randomized the initial location of box.
+Now run `python watch.py` to see the result of this task where we randomized the initial location of box.
 
 ### Part 2
 
