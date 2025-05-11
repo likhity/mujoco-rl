@@ -1,6 +1,8 @@
 # Reinforcement Learning for Robotic Pushing and Bowling in Mujoco
 
-## How to Use
+![image](/bowling.gif)
+
+## See For Yourself
 
 After you clone this repo, we recommend using a virtual environment. Create one like so:
 
